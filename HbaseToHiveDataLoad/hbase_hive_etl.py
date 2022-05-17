@@ -24,11 +24,14 @@ def main():
             load_type = 'Incremental'
         spark = spark_session(table_name, load_type, business_date)
         business_date_epoch = get_timestamp_epoch(load_type, business_date)
+        start_date_epoch = business_date_epoch[0]
+        end_date_epoch = business_date_epoch[1]
         table_config = json.load(open(args.config))
         schema = table_config[table_name]['Schema']
         filter_col = table_config[table_name]['FilterCol']
         query = table_config[table_name]['Query']
-        final_df = query_hbase_table(spark, schema, table_name, load_type, query, filter_col, business_date_epoch)
+        final_df = query_hbase_table(spark, schema, table_name, load_type, query, filter_col, start_date_epoch,
+                                     end_date_epoch)
         final_df.show()
         write_hive_table(final_df, db_name, table_name)
     except Exception as e:
