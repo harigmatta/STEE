@@ -17,6 +17,7 @@ def get_timestamp_epoch(load_type, biz_date):
         end_epoch = int(calendar.timegm(datetime.datetime(year, month, day, 23, 59, 59).timetuple()))
         return start_epoch, end_epoch
 
+
 def query_hbase_table(spark, schema, table_name, load_type, query, filter_col, start_date_epoch, end_date_epoch):
     separator = ","
     try:
@@ -26,7 +27,7 @@ def query_hbase_table(spark, schema, table_name, load_type, query, filter_col, s
             .option("hbase.spark.use.hbasecontext", False).load()
 
         hbase_df.createOrReplaceTempView(table_name)
-	partition_col_append_query = query.replace("from", "{1} from_unixtime({0}, 'yyyy-mm-dd') as {0} from".format(filter_col, separator))
+        partition_col_append_query = query.replace("from", "{1} from_unixtime({0}, 'yyyy-mm-dd') as {0} from".format(filter_col, separator))
         print("Part Query: ", partition_col_append_query)
         final_query = partition_col_append_query + " where {0} >= {1} and {0} <= {2}".format(filter_col, start_date_epoch, end_date_epoch)
         print("Final Query: {}".format(final_query))
