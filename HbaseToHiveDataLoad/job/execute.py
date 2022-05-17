@@ -44,6 +44,11 @@ def query_hbase_table(spark, schema, table_name, logger, query, filter_col, star
 
 
 def write_hive_table(logger, final_df, db_name, table_name):
-    target_table = db_name + "." + table_name
-    logger.info("Write to Hive table: {}".format(target_table))
-    final_df.write.format("parquet").mode("overwrite").insertInto(target_table)
+    try:
+        target_table = db_name + "." + table_name
+        logger.info("Write to Hive table: {}".format(target_table))
+        final_df.write.format("parquet").mode("overwrite").insertInto(target_table)
+    except Exception as e:
+        logger.error("Job Failed due to {}".format(e))
+        sys.exit(1)
+
