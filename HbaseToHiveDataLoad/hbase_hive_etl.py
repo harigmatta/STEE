@@ -1,8 +1,8 @@
 import argparse
 import json
 import sys
-from util.spark_session import spark_session, get_timestamp_epoch
-from job.execute import query_hbase_table, write_hive_table
+from spark_session import spark_session
+from execute import get_timestamp_epoch, query_hbase_table, write_hive_table
 
 
 def main():
@@ -10,7 +10,7 @@ def main():
         parser = argparse.ArgumentParser()
         parser.add_argument('-s', '--database', dest='database', action='store', default=None)
         parser.add_argument('-t', '--table', dest='table_name', action='store', default=None)
-        parser.add_argument('-c', '--config', dest='config', action='store', default=None)
+        parser.add_argument('-j', '--config', dest='config', action='store', default=None)
         parser.add_argument('-d', '--business_date', dest="business_date", action='store', default=None)
         parser.add_argument('-k', '--kind', dest="load_type", action='store', default=None)
         args = parser.parse_args()
@@ -18,9 +18,9 @@ def main():
         table_name = args.table_name
         load_type = None
         business_date = args.business_date
-        if args.type.upper() == "H":
+        if args.load_type.upper() == "H":
             load_type = 'Historical'
-        elif args.type.upper() == "I":
+        elif args.load_type.upper() == "I":
             load_type = 'Incremental'
         spark = spark_session(table_name, load_type, business_date)
         business_date_epoch = get_timestamp_epoch(load_type, business_date)

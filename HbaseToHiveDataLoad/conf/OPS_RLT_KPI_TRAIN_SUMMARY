@@ -1,7 +1,6 @@
 {
-  "OPS_RLT_KPI_TRAIN_SUMMARY" : {
-  "Schema":{"calcID STRING d:calcID,trn STRING d:trn,svc STRING d:svc,line STRING d:line,pos STRING d:pos,stnFr STRING d:stnFr,stnTo STRING d:stnTo,stnDT STRING d:stnDtd,bnd STRING d:bnd,aLvl STRING d:aLvl,mvtConf STRING d:mvtConf,isRev Boolean d:isRev, onMap Boolean d:onMap,lat STRING d:lat,long STRING d:long,rcvTs Long d:rcvTs,inSvc Boolean d:inSvc,json String d:json"},
-  "FilterCol": "rcvTs",
-  "Query" : "select calcID,svc,line,pos,stnFr,stnTo,stnDT,bnd,alVl,mvtConf,isRev,onMap,lat,long,inSvc,json from OPS_RLT_KPI_TRAIN_SUMMARY"
+  "OPS_RLT_KPI_TRAIN_SUMMARY":{ "Schema" : "calcID STRING d:calcID,trn STRING d:trn,svc STRING d:svc,line STRING d:line,pos STRING d:pos,stnFr STRING d:stnFr,stnTo STRING d:stnTo,stnDT STRING d:stnDtd,bnd STRING d:bnd,aLvl STRING d:aLvl,mvtConf STRING d:mvtConf,isRev Boolean d:isRev, onMap Boolean d:onMap,lat STRING d:lat,long STRING d:long,rcTs BIGINT d:rcTs,inSvc Boolean d:inSvc,json String d:json",
+  "FilterCol":"rcTs",
+  "Query":"select calcID,svc,line,pos,stnFr,stnTo,stnDT,bnd,alVl,mvtConf,isRev,onMap,lat,long,inSvc,json from OPS_RLT_KPI_TRAIN_SUMMARY"
  }
 }
