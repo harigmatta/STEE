@@ -1,6 +1,7 @@
 from pyspark.sql.functions import *
 import datetime
 import calendar
+import sys
 
 
 def get_timestamp_epoch(load_type, biz_date):
@@ -28,7 +29,7 @@ def query_hbase_table(spark, schema, table_name, logger, query, filter_col, star
 
         hbase_df.createOrReplaceTempView(table_name)
         partition_col_append_query = query.replace("from", "{1} from_unixtime({0}, 'yyyy-mm-dd') as {0} from".format(filter_col, separator))
-        logger.info("Part Query: ", partition_col_append_query)
+        logger.info("Part Query: {}".format(partition_col_append_query))
         final_query = partition_col_append_query + " where {0} >= {1} and {0} <= {2}".format(filter_col, start_date_epoch, end_date_epoch)
         logger.info("Final Query: {}".format(final_query))
         if len(final_query) != 0:
@@ -36,7 +37,7 @@ def query_hbase_table(spark, schema, table_name, logger, query, filter_col, star
             return final_df
         else:
             logger.error("Error: The final query cannot be null")
-            exit(1)
+            sys.exit(1)
     except Exception as e:
         logger.error("Job Failed due to {}".format(e))
         sys.exit(1)
